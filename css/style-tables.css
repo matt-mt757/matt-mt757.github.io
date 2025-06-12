@@ -1,0 +1,115 @@
+
+table {
+  font-family: arial;
+  border-collapse: collapse;
+  width: 100%;
+  font-size:12px;
+/*   max-width:800px; */
+}
+
+
+th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold
+}
+td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+/*   font-weight: bold; */
+
+}
+
+table.zebra tr:nth-child(even) {
+  background-color: #dddddd;
+  /* To use this, insert <table class="zebra"> */
+  
+}
+
+
+
+
+table.TableAlignCentre {
+  font-family: arial;
+  border-collapse: collapse;
+  width: 100%;
+  font-size:12px;
+/*   max-width:800px; */
+}
+
+
+.TableAlignCentre th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold
+}
+.TableAlignCentre td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+
+}
+
+
+
+
+
+.TableOversizeTimes {
+  font-family: arial;
+  border-collapse: collapse;
+  width: 100%;
+  font-size:12px;
+}
+
+.TableOversizeTimes th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+  text-align: center;  
+  background-color: black;
+  color: white;
+  font-size:13px;  
+}
+.TableOversizeTimes td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: center;  
+/*   font-weight: bold; */
+
+}
+
+
+
+
+/* TABLE STYLE FOR LINKS */
+.Table-Links {
+  font-family: arial;
+  border-collapse: collapse;
+  width: 100%;
+  font-size:14px;
+  border: 2px solid #6d6d6d;
+}
+
+.Table-Links th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  font-weight: bold;
+  background-color: #eeeeee;
+  width: 25%;
+  font-size: medium;
+}
+.Table-Links td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+/*   font-weight: bold; */
+}
+
+.Table-Links tr.border-bottom {
+  border-bottom: 2px solid #6d6d6d;
+}

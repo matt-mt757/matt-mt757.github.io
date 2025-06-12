@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+<html>
+<head>	
+	
+<title>Recovered SMV Narrative Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/style-tables.css">
+
+</head>
+<body onload="viewDidLoad();">
+<button class="menubtn"; onclick="location.href='/index.html'"><i class="fa fa-home"></i> Home</button>
+
+<!--- MAIN HEADING --->
+<h1>Recovered SMV Narrative Generator</h1>
+
+
+	
+<div class="inputDataFields">
+                <div class="inputDataFields-row">
+                    <label>TIME:</label>
+                    <input type="time" id="SMVinputIncidentTime">
+                </div>
+				
+				<script>
+					let formattedSMVinputIncidentTime = ""; // Variable to store the formatted time
+
+					document.getElementById("SMVinputIncidentTime").addEventListener("input", function () {
+						let time = this.value; // Get time from input field
+						if (time) {
+							let [hours, minutes] = time.split(":").map(Number);
+							let ampm = hours >= 12 ? "pm" : "am";
+							hours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+							formattedSMVinputIncidentTime = `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+						}
+					});
+				</script>
+				
+		
+                <div class="inputDataFields-row">
+                    <label>DATE:</label>
+					<input type="date" id="SMVinputIncidentDate">
+                </div>
+                <div class="inputDataFields-row">
+                    <label>PLACE:</label>
+                    <input type="text" id="SMVinputIncidentLocation" placeholder="">
+                </div>
+                
+                <br>
+                <div class="inputDataFields-row">
+                    <label>REGO:</label>
+                    <input type="text" style="text-transform:uppercase" id="SMVinputSMVRego" placeholder="" size="10">
+                    <select id="SMVinputSMVRegoState"><option></option><option>NSW</option><option>VIC</option><option>ACT</option><option>QLD</option><option>SA</option><option>WA</option><option>NT</option><option>TAS</option></select>                      
+                </div>    
+				
+                <div class="inputDataFields-row">
+                    <label>MAKE:</label>
+                    <input type="text" id="SMVinputMake" placeholder="">
+                </div>   
+				
+                <div class="inputDataFields-row">
+                    <label>MODEL:</label>
+                    <input type="text" id="SMVinputModel" placeholder="">
+                </div>   
+				
+                <div class="inputDataFields-row">
+                    <label>COLOUR:</label>
+                    <input type="text" id="SMVinputColour" placeholder="">
+                </div>   
+				
+                <div class="inputDataFields-row">
+                    <label>YEAR:</label>
+                    <input type="text" id="SMVinputYear" placeholder="">
+                </div>   				
+                <br>
+
+				<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					var platesLocatedDropdown = document.getElementById("originalPlatesLocated");
+					var affixedSection = document.getElementById("originalPlatesAffixed").parentNode; // Selects the parent div
+
+					function toggleAffixedSection() {
+						if (platesLocatedDropdown.value === "yes") {
+							affixedSection.style.display = "";
+						} else {
+							affixedSection.style.display = "none";
+						}
+					}
+
+					if (platesLocatedDropdown) {
+						platesLocatedDropdown.addEventListener("change", toggleAffixedSection);
+						toggleAffixedSection(); // Ensure correct initial state on page load
+					}
+				});
+				</script>
+
+				<!-- Original number plates located? -->
+				<div id="originalPlatesNoSection" class="inputDataFields-row">
+					<label for="originalPlatesLocated">Original number plates located?</label>
+					<select id="originalPlatesLocated">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+
+				<!-- Original number plates affixed? (Initially Hidden) -->
+				<div class="inputDataFields-row" style="display: none;">
+					<label for="originalPlatesAffixed">Original number plates affixed?</label>				
+					<select id="originalPlatesAffixed">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+
+
+				<div class="inputDataFields-row">
+					<label for="numberPlatesOnVehicle">Other number plates affixed?</label>
+					<select id="numberPlatesOnVehicle" onchange="saveSelection('numberPlatesOnVehicle')">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+				
+					<script>
+					function toggleNumberPlatesInput() {
+						var otherPlates = document.getElementById("numberPlatesOnVehicle").value;
+						var inputSection = document.getElementById("numberPlatesInput");
+
+						if (otherPlates === "yes") {
+							inputSection.style.display = "";
+						} else {
+							inputSection.style.display = "none";
+						}
+					}
+
+					// Run function on page load to handle pre-selected values
+					document.addEventListener("DOMContentLoaded", function () {
+						toggleNumberPlatesInput();
+					});
+
+					// Attach onchange event
+					document.getElementById("numberPlatesOnVehicle").addEventListener("change", toggleNumberPlatesInput);
+					</script>
+
+
+
+					<!-- Enter other number plates (Initially Hidden) -->
+					<div id="numberPlatesInput" class="inputDataFields-row" style="display: none;">
+						<label for="numberPlate" style="vertical-align: top;">Enter other number plates:</br>(Leave blank as needed)</label>
+						<input type="text" style="text-transform:uppercase" id="numberPlateFront" placeholder="Front" size="10">
+						<select id="numberPlateStateFront">
+							<option></option><option>NSW</option><option>VIC</option><option>ACT</option><option>QLD</option>
+							<option>SA</option><option>WA</option><option>NT</option><option>TAS</option>
+						</select>                      
+						<br>
+						<input type="text" style="text-transform:uppercase" id="numberPlateRear" placeholder="Rear" size="10">
+						<select id="numberPlateStateRear">
+							<option></option><option>NSW</option><option>VIC</option><option>ACT</option><option>QLD</option>
+							<option>SA</option><option>WA</option><option>NT</option><option>TAS</option>
+						</select>                      
+					</div>
+
+				
+
+
+				<br>
+				
+				<!-- Vehicle photographed -->
+				<div class="inputDataFields-row">
+				<label for="vehiclePhotographed">Vehicle photographed?</label>
+				<select id="vehiclePhotographed" onchange="saveSelection('vehiclePhotographed')">
+					<option value=""></option>
+					<option value="yes">YES</option>
+					<option value="no">NO</option>
+				</select>
+				</div>
+
+				<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					var gainedDropdown = document.getElementById("entryGainedInput");
+					var gainedDetailsSection = document.getElementById("entryGainedDetailsInput");
+
+					function toggleGainedDetails() {
+						if (gainedDropdown.value === "yes") {
+							gainedDetailsSection.style.display = "";
+						} else {
+							gainedDetailsSection.style.display = "none";
+						}
+					}
+
+					if (gainedDropdown) {
+						gainedDropdown.addEventListener("change", toggleGainedDetails);
+						toggleGainedDetails(); // Ensure correct state on load
+					}
+				});
+				</script>
+
+				<!-- Vehicle entry -->
+				<div class="inputDataFields-row">
+					<label for="entryGainedInput">Entry gained?</label>
+					<select id="entryGainedInput" onchange="saveSelection('entryGainedInput')">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+
+				<!-- Details (Initially Hidden) -->
+				<div id="entryGainedDetailsInput" class="inputDataFields-row" style="display: none;">
+					<label for="entryGainedDetails" style="vertical-align: top;">Entry details:</label>
+					<textarea id="entryGainedDetails" rows="4" style="width: 99%;" placeholder="Details about gaining entry to the vehicle. Eg. vehicle unlocked, used spare key, forced entry, etc."></textarea>
+				</div>
+				
+				<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					var searchDropdown = document.getElementById("vehicleSearched");
+					var searchDetailsSection = document.getElementById("itemsSeizedDetailsInput");
+
+					function toggleSearchDetails() {
+						if (searchDropdown.value === "yes") {
+							searchDetailsSection.style.display = "";
+						} else {
+							searchDetailsSection.style.display = "none";
+						}
+					}
+
+					if (searchDropdown) {
+						searchDropdown.addEventListener("change", toggleSearchDetails);
+						toggleSearchDetails(); // Ensure correct state on load
+					}
+				});
+				</script>
+			
+				<!-- Vehicle searched -->
+				<div class="inputDataFields-row">
+				<label>Vehicle searched?</label>
+					<select id="vehicleSearched">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+
+				<!-- Details (Initially Hidden) -->
+				<div id="itemsSeizedDetailsInput" class="inputDataFields-row" style="display: none;">
+					<label for="itemsSeizedDetails" style="vertical-align: top;">Search details:</label>
+					<textarea id="itemsSeizedDetails" rows="4" style="width: 99%;" placeholder="Details about searching the vehicle. Eg. State whether items were seized and list any such items."></textarea>
+				</div>
+				
+
+
+
+                <!-- Vehicle searched? <!-- Yes / No -->
+					<script>
+					function saveVehicleSearched(selection){
+						if (selection == "yes") { 
+							document.getElementById('itemsSeized').style.display='';	
+						}
+						else { 
+							document.getElementById('itemsSeized').style.display='none';	
+						}
+					}
+					
+					// Hide textarea on page load
+					window.onload = function() {
+						document.getElementById('itemsSeized').style.display = 'none';
+					};					
+					</script>
+
+				<br>
+
+				<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					var canvassDropdown = document.getElementById("canvassConducted");
+					var canvassDetailsSection = document.getElementById("canvassDetailsInput");
+
+					function toggleCanvassDetails() {
+						if (canvassDropdown.value === "yes") {
+							canvassDetailsSection.style.display = "";
+						} else {
+							canvassDetailsSection.style.display = "none";
+						}
+					}
+
+					if (canvassDropdown) {
+						canvassDropdown.addEventListener("change", toggleCanvassDetails);
+						toggleCanvassDetails(); // Ensure correct state on load
+					}
+				});
+				</script>
+
+				<!-- Canvass conducted? -->
+				<div class="inputDataFields-row">
+					<label for="canvassConducted">Canvass conducted?</label>
+					<select id="canvassConducted">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+
+				<!-- Details (Initially Hidden) -->
+				<div id="canvassDetailsInput" class="inputDataFields-row" style="display: none;">
+					<label for="canvassDetails" style="vertical-align: top;">Canvass details:</label>
+					<textarea id="canvassDetails" rows="4" style="width: 99%;" placeholder="Details about canvassing. Eg. Houses visited, any CCTV camera footage, any witnesses, etc."></textarea>
+				</div>
+
+
+				<br>
+
+				<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					var vehicleTowedDropdown = document.getElementById("vehicleTowed");
+					var approvingOfficerSection = document.getElementById("approvingOfficerSection");
+
+					function toggleApprovingOfficer() {
+						if (vehicleTowedDropdown.value === "yes") {
+							approvingOfficerSection.style.display = "";
+						} else {
+							approvingOfficerSection.style.display = "none";
+						}
+					}
+
+					if (vehicleTowedDropdown) {
+						vehicleTowedDropdown.addEventListener("change", toggleApprovingOfficer);
+						toggleApprovingOfficer(); // Ensure correct state on load
+					}
+				});
+				</script>
+
+				<!-- Vehicle towed? -->
+				<div class="inputDataFields-row">
+					<label for="vehicleTowed">Vehicle towed?</label>
+					<select id="vehicleTowed">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+
+				<!-- Approving officer (Initially Hidden) -->
+				<div id="approvingOfficerSection" class="inputDataFields-row" style="display: none;">
+					<label for="approvingOfficer">Approving officer:</label>
+					<input type="text" id="approvingOfficer">
+				</div>
+
+
+				<br>
+
+				<!-- Forensic job created -->
+				<div class="inputDataFields-row">
+				<label for="forensicJobCreated">Forensic job created?</label>
+				<select id="forensicJobCreated" onchange="saveSelection('forensicJobCreated')">
+					<option value=""></option>
+					<option value="yes">YES</option>
+					<option value="no">NO</option>
+				</select>
+				</div>
+				
+				<!-- Disposal form submitted -->
+				<div class="inputDataFields-row">
+				<label for="disposalFormSubmitted">Disposal form submitted?</label>
+				<select id="disposalFormSubmitted" onchange="saveSelection('disposalFormSubmitted')">
+					<option value=""></option>
+					<option value="yes">YES</option>
+					<option value="no">NO</option>
+				</select>
+				</div>
+
+				</br>
+				
+				<!-- Victim notified -->
+				<div class="inputDataFields-row">
+				<label for="victimNotified">Victim notified?</label>
+				<select id="victimNotified" onchange="saveSelection('victimNotified')">
+					<option value=""></option>
+					<option value="yes">YES</option>
+					<option value="no">NO</option>
+				</select>
+				</div>
+
+				<br>
+
+				<!-- Other information? -->
+				<div class="inputDataFields-row">
+					<label for="otherInformation">Other information?</label>
+					<select id="otherInformation">
+						<option value=""></option>
+						<option value="yes">YES</option>
+						<option value="no">NO</option>
+					</select>
+				</div>
+				
+				<!-- Other information text box (Initially Hidden) -->
+				<div id="otherInformationInput" class="inputDataFields-row" style="display: none;">
+                    <label style="vertical-align: top;">Other information details:</label>
+                    <textarea id="SMVinputOtherInformation" rows="4" value="" style="width: 99%;" placeholder="Include any other information to place at the end of the narrative."></textarea>
+				</div>
+ 
+				<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					var otherInformationDropdown = document.getElementById("otherInformation");
+					var otherInformationDetailsSection = document.getElementById("otherInformationInput");
+
+					function toggleOtherInformationDetails() {
+						if (otherInformationDropdown.value === "yes") {
+							otherInformationDetailsSection.style.display = "";
+						} else {
+							otherInformationDetailsSection.style.display = "none";
+						}
+					}
+
+					if (otherInformationDropdown) {
+						otherInformationDropdown.addEventListener("change", toggleOtherInformationDetails);
+						toggleOtherInformationDetails(); // Ensure correct state on load
+					}
+				});
+				</script>
+ 
+                <br>
+                <div class="inputDataFields-row">
+                    <label>Call Sign - Officers:</label>
+                    <input type="text" style="text-transform:uppercase" id="SMVinputCallSign" placeholder="CALLSIGN - SURNAMES">
+                </div>				
+</div>                
+
+
+
+
+<p>
+<button class="generalbtn" onclick="generateNarrative(),copyToClipboard(narrative);"> Generate & Copy Narrative </button><br>
+
+
+</p>
+
+
+<div id="narrativeText">
+	<textarea id="SMVinputNarrativeText" rows="20" value="" style="width: 99%;" ></textarea>
+</div>
+
+<button class="generalbtn" onclick="sendMail()">Send Narrative via Email</button>
+<button class="generalbtn" onclick="generatePDF()">Generate PDF</button>
+
+<p>
+<button class="generalbtn" onclick="clearFields()" tabindex="12">Clear all Fields</button>
+</p>
+
+
+<script>
+
+    function viewDidLoad(){ //RUN CODE UPON LOADING OF WEBSITE
+	    populatePageInputs() //Upon loading the webpage, check what elements exist in local storage of users device to repopulate the fields
+	    if (document.getElementById("SMVinputCallSign").value == ""){
+		    document.getElementById("SMVinputCallSign").value = localStorage.getItem("inputCallSign").toUpperCase()
+	    }
+    }
+    
+    //Event listener for all text inputs are located within LocalStorage.js
+    
+	//These ones are not input's so must do them seperately from the FOR loop
+
+	
+	document.getElementById("SMVinputIncidentDate").addEventListener("blur", function (){
+    saveToLocalStorage("SMVinputIncidentDate",document.getElementById("SMVinputIncidentDate").value) });
+	
+	document.getElementById("formattedSMVinputIncidentTime").addEventListener("blur", function (){
+    saveToLocalStorage("formattedSMVinputIncidentTime",document.getElementById("formattedSMVinputIncidentTime").value) });
+	
+	document.getElementById("SMVinputSMVRegoState").addEventListener("blur", function (){
+    saveToLocalStorage("SMVinputSMVRegoState",document.getElementById("SMVinputSMVRegoState").value) });
+
+    document.getElementById("vehicleSearched").addEventListener("blur", function (){
+    saveToLocalStorage("vehicleSearched",document.getElementById("vehicleSearched").value) });
+    document.getElementById("itemsSeized").addEventListener("blur", function (){
+    saveToLocalStorage("itemsSeized",document.getElementById("itemsSeized").value) });
+
+  	document.getElementById("SMVinputNarrativeText").addEventListener("blur", function (){
+    	saveToLocalStorage("SMVinputNarrativeText",document.getElementById("SMVinputNarrativeText").value) }); 
+
+	document.getElementById("originalPlatesLocated").addEventListener("blur", function (){
+    saveToLocalStorage("originalPlatesLocated",document.getElementById("originalPlatesLocated").value) });
+	
+	document.getElementById("originalPlatesAffixed").addEventListener("blur", function (){
+    saveToLocalStorage("originalPlatesAffixed",document.getElementById("originalPlatesAffixed").value) });
+
+	document.getElementById("numberPlatesOnVehicle").addEventListener("blur", function (){
+    saveToLocalStorage("numberPlatesOnVehicle",document.getElementById("numberPlatesOnVehicle").value) });
+
+	document.getElementById("numberPlateStateFront").addEventListener("blur", function (){
+    saveToLocalStorage("numberPlateStateFront",document.getElementById("numberPlateStateFront").value) });
+	
+	document.getElementById("numberPlateStateRear").addEventListener("blur", function (){
+    saveToLocalStorage("numberPlateStateRear",document.getElementById("numberPlateStateRear").value) });
+
+	document.getElementById("vehiclePhotographed").addEventListener("blur", function (){
+    saveToLocalStorage("vehiclePhotographed",document.getElementById("vehiclePhotographed").value) });
+
+	document.getElementById("entryGainedInput").addEventListener("blur", function (){
+    saveToLocalStorage("entryGainedInput",document.getElementById("entryGainedInput").value) });
+
+	document.getElementById("entryGainedDetails").addEventListener("blur", function (){
+    saveToLocalStorage("entryGainedDetails",document.getElementById("entryGainedDetails").value) });
+
+	document.getElementById("itemsSeizedDetailsInput").addEventListener("blur", function (){
+    saveToLocalStorage("itemsSeizedDetailsInput",document.getElementById("itemsSeizedDetailsInput").value) });
+
+	document.getElementById("canvassConducted").addEventListener("blur", function (){
+    saveToLocalStorage("canvassConducted",document.getElementById("canvassConducted").value) });
+
+	document.getElementById("canvassDetails").addEventListener("blur", function (){
+    saveToLocalStorage("canvassDetails",document.getElementById("canvassDetails").value) });
+
+	document.getElementById("vehicleTowed").addEventListener("blur", function (){
+    saveToLocalStorage("vehicleTowed",document.getElementById("vehicleTowed").value) });
+
+	document.getElementById("forensicJobCreated").addEventListener("blur", function (){
+    saveToLocalStorage("forensicJobCreated",document.getElementById("forensicJobCreated").value) });
+
+	document.getElementById("disposalFormSubmitted").addEventListener("blur", function (){
+    saveToLocalStorage("disposalFormSubmitted",document.getElementById("disposalFormSubmitted").value) });
+
+	document.getElementById("victimNotified").addEventListener("blur", function (){
+    saveToLocalStorage("victimNotified",document.getElementById("victimNotified").value) });
+
+	document.getElementById("SMVinputOtherInformation").addEventListener("blur", function (){
+    saveToLocalStorage("SMVinputOtherInformation",document.getElementById("SMVinputOtherInformation").value) });
+
+</script>
+
+
+
+
+
+<!-- PDF -->
+<!-- Source Code - jsPDF - https://artskydj.github.io/jsPDF/docs/index.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script> <!-- Script for PDF Generation  -->
+
+ 
+<script>
+	function generatePDF(){	
+		if (document.getElementById('SMVinputNarrativeText').value == ""){
+			generateNarrative()
+		}		
+
+//Generate PDF
+//A4 = inch W:8.25 / H 11.75
+		event.preventDefault()
+	
+		var doc = new jsPDF({orientation: 'portrait',unit: 'in', format: 'a4'}); //Generate a New PDF Document (ppi = 72)
+		let message = document.getElementById("SMVinputNarrativeText").value.replaceAll("\r\r\n", "\r\n\n").replaceAll("\r\n", "\r\n"); //Replace carriage returns and new lines to work with jsPDF.
+		
+		var splitMessage = doc.splitTextToSize(message, 11.5); //Split the text by the amount for word wrapping
+		doc.setFontSize(10); //Set Font Size for page
+		doc.text(splitMessage, 0.5, 0.8); //Source of text and X & Y positions (Text, X, Y)
+		
+		
+		//HEADER
+		for (let i = 1; i <= doc.getNumberOfPages(); i++) {
+			doc.setPage(i)
+			doc.setTextColor(128,128,128); //RGB Values
+			let pageWidth = doc.internal.pageSize.getWidth(); //Gets width of PDF document and sets as variable.
+			doc.text('Recovered SMV - '+ document.getElementById("SMVinputSMVRego").value.toUpperCase() + " ("+document.getElementById("SMVinputSMVRegoState").value + ")", pageWidth / 2, 0.35, 'center')
+		}
+		
+		//FOOTER - Page Number
+		for (let i = 1; i <= doc.getNumberOfPages(); i++) {
+			doc.setPage(i)
+			doc.setTextColor(128,128,128); //RGB Values
+			let pageWidth = doc.internal.pageSize.getWidth(); //Gets width of PDF page within document and sets as variable.
+			let pageHeight = doc.internal.pageSize.getHeight() //Gets height of PDF page within document and sets as variable.
+			doc.text('Page '+ i + ' of ' + doc.getNumberOfPages(), pageWidth - 0.5, pageHeight - 0.3, 'right')
+		}
+		
+		doc.save('Recovered SMV - ' + document.getElementById("SMVinputSMVRego").value.toUpperCase() + " ("+document.getElementById("SMVinputSMVRegoState").value + ")" + '.pdf'); //Save PDF with filename
+}
+</script>
+
+
+
+
+
+<!-- SCRIPT FOR TEXTBOXES -->
+<script>
+	
+	
+function sendMail() {
+	if (document.getElementById('SMVinputNarrativeText').value == ""){
+		generateNarrative()
+	}	
+	let message = document.getElementById("SMVinputNarrativeText").value.replaceAll("\n", "%0D%0A");
+    window.location.href = 'mailto: ?subject=Recovered SMV - ' + document.getElementById("SMVinputSMVRego").value + '&body=' + message;
+// SOURCE: https://stackoverflow.com/questions/32604812/create-mailto-from-form-with-custom-fields
+}
+
+	
+function generateNarrative(){
+	
+	dateList = ["","","",""] //Generate a empty list of dateList so it can be populated later, else this will break the narrative generation as there is no list to reference.
+	if (document.getElementById("SMVinputIncidentDate").value != ""){
+		dateList = dateString(SMVinputIncidentDate) //Run date function to convert the date picker to a full date string.
+	}
+
+//----LOGIC / CONDITIONS----
+	//ORIGINAL NUMBER PLATES LOCATED?
+	if (document.getElementById('originalPlatesLocated').value == "yes") {
+		OriginalPlatesReport = "The original number plates were located";
+	} else if (document.getElementById('originalPlatesLocated').value == "no") {
+		OriginalPlatesReport = "The original number plates were not located with the vehicle.";
+	} else {
+		OriginalPlatesReport = "";
+	}
+	
+	//ORIGINAL NUMBER PLATES AFFIXED?
+	if (document.getElementById('originalPlatesAffixed').value == "yes") {
+		AffixedPlatesReport = "attached to the vehicle.";
+	} else if (document.getElementById('originalPlatesAffixed').value == "no") {
+		AffixedPlatesReport = "with the vehicle.";
+	} else {
+		AffixedPlatesReport = "";
+	}
+
+	//COMBINATION OF OTHER NUMBER PLATES IF AFFIXED
+	const numberPlateFront = document.getElementById("numberPlateFront").value.trim();
+	const numberPlateRear = document.getElementById("numberPlateRear").value.trim();
+
+	let OtherAffixedPlatesReport = "";
+
+	if (numberPlateFront !== "" && numberPlateRear !== "") {
+		OtherAffixedPlatesReport = "Front number plate " +document.getElementById("numberPlateFront").value.toUpperCase() + " ("+document.getElementById("numberPlateStateFront").value + ")" + " and rear number plate "+document.getElementById("numberPlateRear").value.toUpperCase() + " ("+document.getElementById("numberPlateStateRear").value + ")."+ "\r\r\n";
+	} else if (numberPlateFront !== "" && numberPlateRear === "") {
+		OtherAffixedPlatesReport = "Front number plate " +document.getElementById("numberPlateFront").value.toUpperCase() + " ("+document.getElementById("numberPlateStateFront").value + ")"+ " with no rear number plate attached."+ "\r\r\n";
+	} else if (numberPlateFront === "" && numberPlateRear !== "") {
+		OtherAffixedPlatesReport = "Rear number plate " +document.getElementById("numberPlateRear").value.toUpperCase() + " ("+document.getElementById("numberPlateStateRear").value + ")"+ " with no front number plate attached."+ "\r\r\n";
+	}
+	
+	//OTHER NUMBER PLATES AFFIXED?
+	if (document.getElementById('numberPlatesOnVehicle').value == "yes") {
+		OtherPlatesReport = "The vehicle had other number plates attached. ";
+	} else if (document.getElementById('numberPlatesOnVehicle').value == "no") {
+		OtherPlatesReport = "There were no other number plates attached." + "\r\r\n";
+	} else {
+		OtherPlatesReport = "";
+	}
+
+	//VEHICLE PHOTOGRAPHED?
+ 	if (document.getElementById('vehiclePhotographed').value == "yes"){
+	 	PhotoReport = "Police took photos of the recovered vehicle. These photos have been uploaded to the event." + "\r\r\n"
+	} else {PhotoReport = ""}	
+	
+	//ENTRY GAINED TO VEHICLE?
+	if (document.getElementById('entryGainedInput').value == "yes") {
+		EntryGainedReport = "Police were able to gain entry to the vehicle. ";
+	} else if (document.getElementById('entryGainedInput').value == "no") {
+		EntryGainedReport = "The vehicle is locked and entry was not gained. Police are to make arrangements to gain entry to the vehicle. ";
+	} else {
+		EntryGainedReport = "";
+	}
+	
+	//ENTRY GAINED TO VEHICLE - TEXT BOX DATA
+ 	if (document.getElementById('entryGainedDetails').value != ""){
+	 	EntryGainedInformation = document.getElementById("entryGainedDetails").value + "\r\r\n"
+	} else {EntryGainedInformation = ""}	
+
+	//VEHICLE SEARCHED?
+ 	if (document.getElementById('vehicleSearched').value == "yes"){
+	 	SearchedReport = "A search of the vehicle was conducted."
+	} else {SearchedReport = ""}	
+	
+	//ENTRY GAINED TO VEHICLE - TEXT BOX DATA
+ 	if (document.getElementById('itemsSeizedDetails').value != ""){
+	 	SearchedInformation = " " + document.getElementById("itemsSeizedDetails").value + "\r\r\n"
+	} else {SearchedInformation = ""}	
+	
+	//CANVASS CONDUCTED?
+ 	if (document.getElementById('canvassConducted').value == "yes"){
+	 	CanvassConductedReport = "Police canvassed the area for any witnesses or CCTV cameras."
+	} else {CanvassConductedReport = ""}	
+	
+	//CANVASS CONDUCTED - TEXT BOX DATA
+ 	if (document.getElementById('canvassDetails').value != ""){
+	 	CanvassConductedInformation = " " + document.getElementById("canvassDetails").value + "\r\r\n"
+	} else {CanvassConductedInformation = ""}	
+	
+	//VEHICLE TOWED?
+ 	if (document.getElementById('vehicleTowed').value == "yes"){
+	 	VehicleTowedReport = "A tow was organised for the vehicle to be taken to the police holding yard for forensic examination. "
+	} else {VehicleTowedReport = ""}	
+	
+	//VEHICLE TOWED - TEXT BOX DATA
+ 	if (document.getElementById('approvingOfficer').value != ""){
+	 	VehicleTowedInformation = "This was approved by " + document.getElementById("approvingOfficer").value + "." + "\r\r\n"
+	} else {VehicleTowedInformation = ""}	
+	
+	//FORENSIC JOB CREATED?
+ 	if (document.getElementById('forensicJobCreated').value == "yes"){
+	 	ForensicJobReport = "An analysis job has been created for the vehicle to be examined." + "\r\r\n"
+	} else {ForensicJobReport = ""}	
+	
+	//DISPOSAL FORM SUBMITTED?
+ 	if (document.getElementById('disposalFormSubmitted').value == "yes"){
+	 	DisposalFormReport = "A disposal form has been emailed through to the police holding yard." + "\r\r\n"
+	} else {DisposalFormReport = ""}	
+	
+	//VICTIM NOTIFIED?
+ 	if (document.getElementById('victimNotified').value == "yes"){
+	 	VictimNotifiedReport = "Police have notified the victim that the stolen vehicle was recovered." + "\r\r\n"
+	} else {VictimNotifiedReport = ""}
+
+	//OTHER INFORMATION - TEXT BOX DATA
+ 	if (document.getElementById('SMVinputOtherInformation').value != ""){
+	 	OtherInformation = document.getElementById("SMVinputOtherInformation").value + "\r\r\n"
+	} else {OtherInformation = ""}	
+
+	//GENERATE NARRATIVE:
+	narrative =
+	"TIME: "+ formattedSMVinputIncidentTime + "\r\n"+
+	"DATE: "+dateList[0]+" "+dateList[1]+" "+dateList[2]+" "+dateList[3]+"\r\n"+
+	"PLACE: "+document.getElementById("SMVinputIncidentLocation").value+"\r\r\n"+
+	
+	"VOI: "+document.getElementById("SMVinputSMVRego").value.toUpperCase() + " ("+document.getElementById("SMVinputSMVRegoState").value + ")" + "\r\n" +
+	"MAKE: "+document.getElementById("SMVinputMake").value+ "\r\n" +
+	"MODEL: "+document.getElementById("SMVinputModel").value+ "\r\n" +
+	"COLOUR: "+document.getElementById("SMVinputColour").value+ "\r\n" +
+	"YEAR: "+document.getElementById("SMVinputYear").value+ "\r\r\n" +
+	
+	"About "+ formattedSMVinputIncidentTime + " on "+dateList[0]+" "+dateList[1]+" "+dateList[2]+" "+dateList[3]+", police located the "+document.getElementById("SMVinputColour").value+" "+document.getElementById("SMVinputYear").value+" "+document.getElementById("SMVinputMake").value+" "+document.getElementById("SMVinputModel").value+", original registration " +document.getElementById("SMVinputSMVRego").value.toUpperCase() + " ("+document.getElementById("SMVinputSMVRegoState").value + ")," +" at "+document.getElementById("SMVinputIncidentLocation").value+". " + OriginalPlatesReport + " " + AffixedPlatesReport + " " + OtherPlatesReport +
+	
+	OtherAffixedPlatesReport +
+	
+	EntryGainedReport +
+	
+	EntryGainedInformation +
+	
+	SearchedReport +
+	
+	SearchedInformation +
+	
+	PhotoReport +
+	
+	CanvassConductedReport +
+	
+	CanvassConductedInformation +
+	
+	VehicleTowedReport +
+	
+	VehicleTowedInformation +
+	
+	ForensicJobReport +
+	
+	DisposalFormReport +
+	
+	VictimNotifiedReport +
+	
+	OtherInformation +
+	
+	document.getElementById("SMVinputCallSign").value.toUpperCase()
+		
+	; //End of Narrative Variable
+	document.getElementById('SMVinputNarrativeText').value = narrative; //Print variable narrative into the text box.
+
+}
+
+function copyToClipboard(text) {
+   var textArea = document.createElement( "textarea" );
+   textArea.value = text;
+   document.body.appendChild( textArea );       
+   textArea.select();
+
+   try {
+      var successful = document.execCommand( 'copy' );
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+   } catch (err) {
+      console.log('Oops, unable to copy',err);
+   }    
+   document.body.removeChild( textArea );
+}	
+
+function clearFields(){
+	
+	if (confirm('Are you sure you want to clear all information?')) {
+		//Loop through all INPUTS and set values to "" (nil)		
+		inputs = document.getElementsByTagName("input");
+		for (let i=0; i<inputs.length;i++) {
+			inputs[i].value = "";
+		}	    	
+
+		formattedSMVinputIncidentTime = "";
+		
+		document.getElementById("SMVinputIncidentDate").value = "";
+		document.getElementById("SMVinputSMVRegoState").value = "";		
+		document.getElementById("vehicleSearched").value = "";
+	   	document.getElementById("originalPlatesLocated").value = "";
+	   	document.getElementById("originalPlatesAffixed").value = "";
+	   	document.getElementById("numberPlatesOnVehicle").value = "";
+	   	document.getElementById("numberPlateStateFront").value = "";
+	   	document.getElementById("numberPlateStateRear").value = "";
+	   	document.getElementById("vehiclePhotographed").value = "";
+	   	document.getElementById("entryGainedInput").value = "";
+	   	document.getElementById("canvassConducted").value = "";
+	   	document.getElementById("vehicleTowed").value = "";
+	   	document.getElementById("forensicJobCreated").value = "";
+	   	document.getElementById("disposalFormSubmitted").value = "";
+	   	document.getElementById("victimNotified").value = "";
+		document.getElementById("otherInformation").value = "";
+		
+	  	document.getElementById("SMVinputOtherInformation").value = "";
+	   	document.getElementById("SMVinputNarrativeText").value = "";
+	   	document.getElementById("entryGainedDetails").value = "";
+	   	document.getElementById("itemsSeizedDetailsInput").value = "";
+	   	document.getElementById("canvassDetails").value = "";
+		document.getElementById("itemsSeizedDetails").value = "";
+		
+		document.getElementById('entryGainedDetails').style.display='none';
+		document.getElementById('itemsSeizedDetails').style.display='none';
+		document.getElementById('canvassDetails').style.display='none';
+		document.getElementById('canvassDetails').style.display='none';
+		document.getElementById('approvingOfficerSection').style.display='none';
+		document.getElementById('otherInformationInput').style.display='none';
+		
+		clearLocalStorage()
+	} else {
+	  // Do nothing!
+	}
+}
+
+</script>
+
+<script src="js/LocalStorage.js">
+<!--- SCRIPT FOR LocalStorage FUNCTIONS --->
+</script>
+
+<script src="js/date.js">
+<!--- SCRIPT FOR DATE FORMATTING --->
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESWDJDYYCR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ESWDJDYYCR');
+</script>
+
+</body>
+</html>

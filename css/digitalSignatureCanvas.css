@@ -1,0 +1,54 @@
+.colourPalleteBlack {
+  background-color: black;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  vertical-align:middle;
+}
+.colourPalleteBlue {
+  background-color: #00468B;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  vertical-align:middle;
+}
+.colourPalleteRed {
+  background-color: #DA291C;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  vertical-align:middle;
+}
+.colourPalleteGreen {
+  background-color: #007A53;
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  vertical-align:middle;
+}
+
+ #signature-pad1 {
+  width: 400px;
+  height: 150px;
+  margin: 0 auto;
+  cursor: crosshair;
+  border: 2px dotted #CCCCCC;
+  border-radius: 15px;
+}
+
+ #signature-pad2 {
+  width: 400px;
+  height: 150px;
+  margin: 0 auto;
+  cursor: crosshair;
+  border: 2px dotted #CCCCCC;
+  border-radius: 15px;
+}
